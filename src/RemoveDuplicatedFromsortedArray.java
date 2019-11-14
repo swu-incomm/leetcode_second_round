@@ -36,6 +36,18 @@ for (int i = 0; i < len; i++) {
  */
 public class RemoveDuplicatedFromsortedArray {
     public int removeDuplicates(int[] nums) {
-
+        if (nums == null || nums.length == 0) return 0;
+        int count = 1;
+        int l = 0, r = 0;
+        while(l < nums.length && r<nums.length) {
+            if(nums[l] < nums[r]) {
+                count ++;
+                nums[++l] = nums[r];
+                r++;
+            } else {
+                r++;
+            }
+        }
+        return count;
     }
 }
