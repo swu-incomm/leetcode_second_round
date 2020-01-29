@@ -19,6 +19,7 @@
  * Output: -1
  *
  * the idea of the solution will be , after you find the mid, there must be on half of the array that is still ordered. we will begin our search in that part.
+ * every time we are only using the binary search in the ordered part of the array, otherwise it's gonna be in the other part, then we will be using another iteration to proceed
  */
 
 public class SearchInRotatedSortedArray {
@@ -29,6 +30,7 @@ public class SearchInRotatedSortedArray {
             int mid = start + (end - start)/2;
             if(nums[mid] == target) return  mid;
 
+            //总有一半的array是有序的 只需要在有序的这一半apply binary search， 否则就交给下一次循环
             if(nums[start] <= nums[mid]) {
                 if(target < nums[mid] && target >= nums[start]) {
                     end = mid -1 ;
