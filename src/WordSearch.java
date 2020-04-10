@@ -1,5 +1,3 @@
-import com.sun.org.apache.xerces.internal.dom.AbortException;
-
 /**
  * Given a 2D board and a word, find if the word exists in the grid.
  *
