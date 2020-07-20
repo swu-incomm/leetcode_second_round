@@ -19,37 +19,37 @@ import java.util.*;
  * ]
  */
 public class ThreeSum {
-//    public List<List<Integer>> threeSum(int[] nums) {
-//        List<List<Integer>> ans = new ArrayList<>();
-//        if(nums == null || nums.length < 3) return ans;
-//        Arrays.sort(nums);
-//        for(int i = 0; i< nums.length - 2; i++) {
-//            //check point 1
-//            if(i == 0 || (i> 0 && nums[i] != nums[i-1])) {
-//                int l = i + 1, r = nums.length -1;
-//                while(l < r) {
-//                    if(nums[i] + nums[l] + nums[r] == 0) {
-//                        List<Integer> subList = new ArrayList<>();
-//                        subList.add(nums[i]);
-//                        subList.add(nums[l]);
-//                        subList.add(nums[r]);
-//                        ans.add(subList);
-//                        //check point 2
-//                        while(l < r && nums[l] == nums[l + 1]) l++;
-//                        while(l < r && nums[r] == nums[r - 1]) r--;
-//                        //now the value of nums[l] and nums[r] are still the same as previous answer, we need one more ++ and --
-//                        l++;
-//                        r--;
-//                    } else if(nums[i] + nums[l] + nums[r] > 0) {
-//                        r--;
-//                    } else {
-//                        l++;
-//                    }
-//                }
-//            }
-//        }
-//        return ans;
-//    }
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        if(nums == null || nums.length < 3) return ans;
+        Arrays.sort(nums);
+        for(int i = 0; i<nums.length-2; i++) {
+            if(i == 0 || nums[i] != nums[i-1]) {
+                int l = i +1;
+                int r = nums.length -1;
+                while(l < r) {
+                    int val = nums[i] + nums[l] + nums[r];
+                    if(val == 0) {
+                        List<Integer> subList = new ArrayList<>();
+                        subList.add(nums[i]);
+                        subList.add(nums[l]);
+                        subList.add(nums[r]);
+                        ans.add(subList);
+                        while(l<r && nums[l] == nums[l+1]) l++;
+                        while(l<r && nums[r] == nums[r-1]) r--;
+                        l++;
+                        r--;
+                    }
+                    else if(val < 0) {
+                        l++;
+                    } else {
+                        r--;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
 
     public static void main(String [] args) {
         int [] test = new int[] {-2,0,1,1,2};
@@ -58,7 +58,7 @@ public class ThreeSum {
         System.out.println(res.toString());
     }
 
-    public List<List<Integer>> threeSum(int[] nums) {
+    public List<List<Integer>> threeSumPrev(int[] nums) {
         List<List<Integer>> ans = new ArrayList<>();
         if(nums == null || nums.length < 3) return ans;
         Arrays.sort(nums);
@@ -89,4 +89,6 @@ public class ThreeSum {
         }
         return ans;
     }
+
+
 }
