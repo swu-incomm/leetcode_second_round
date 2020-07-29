@@ -32,6 +32,7 @@ public class FlattenBinaryTreeToLinkedList {
             TreeNode tempRight = root.right;
             root.right = root.left;
             root.left = null;
+            //we need a temp variable to save root
             TreeNode leftLastNode = root;
             while(leftLastNode.right != null) {
                 leftLastNode = leftLastNode.right;
