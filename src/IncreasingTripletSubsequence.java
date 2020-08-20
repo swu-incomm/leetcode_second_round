@@ -33,4 +33,16 @@ public class IncreasingTripletSubsequence {
         }
         return false;
     }
+
+    public boolean increasingTripletOptimization(int[] nums) {
+        if(nums == null || nums.length < 3) return false;
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MAX_VALUE;
+        for(int i : nums) {
+            if(i <= min) min = i;
+            else if (i <= max) max= i;
+            else return true;
+        }
+        return false;
+    }
 }
