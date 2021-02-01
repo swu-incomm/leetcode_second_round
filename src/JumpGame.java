@@ -26,53 +26,55 @@
  * 0 <= nums[i][j] <= 10^5
  */
 public class JumpGame {
-
-//    public boolean canJump(int[] nums) {
-//        if(nums == null || nums.length == 0) {
-//            return false;
-//        }
-//        return backtrack(0, nums);
-//    }
-//
-//    public boolean backtrack(int index, int [] nums) {
-//        if(index == nums.length -1) return true;
-//        int furtherIndex = Math.min(index + nums[index], nums.length -1);
-//        System.out.println(furtherIndex);
-//        for(int i = index + 1; i<=furtherIndex; i++) {
-//            if(backtrack(i, nums)) return true;
-//        }
-//        return false;
-//    }
-    public static void main(String [] args) {
-        JumpGame jumpGame = new JumpGame();
-        int nums[] = {2, 0, 0};
-        jumpGame.canJump(nums);
-    }
-
+    //Back tracking: time limit exceed
+    /**
     public boolean canJump(int[] nums) {
-        if(nums == null || nums.length == 0) return false;
-        Status[] dp = new Status[nums.length];
-        for(Status status : dp) {
-            status = Status.UNKNOWN;
-        }
-        dp[nums.length-1] = Status.GOOD;
-        return backtrack(0, nums, dp);
+        if(nums == null || nums.length < 1) return false;
+        return backtrack(0, nums);
     }
 
-    public boolean backtrack(int index, int [] nums, Status[] dp) {
-        if(dp[index] == Status.GOOD) return true;
-        if(dp[index] == Status.BAD) return false;
-        int furtherStep = Math.min(index + nums[index], nums.length-1);
-        for(int i = furtherStep; i>index; i--) {
-            if(backtrack(i, nums, dp)) {
-                dp[i] = Status.GOOD;
-                return true;
+    public boolean backtrack(int index, int [] nums) {
+        if(index == nums.length - 1) return true;
+        int maximumOffset = index + nums[index];
+        for(int i=index+1; i<=maximumOffset; i++) {
+            if(i<nums.length) {
+                if(backtrack(i, nums)) {
+                    return true;
+                }
             }
         }
-        dp[index] = Status.BAD;
         return false;
+    }**/
+    //dynamic programming like backtracking but with memo
+    public boolean canJump(int[] nums) {
+        if(nums == null || nums.length < 1) return false;
+        Status statuses [] = new Status [nums.length];
+        for(int i=0; i<statuses.length; i++) {
+            statuses[i] = Status.UNKNOWN;
+        }
+        return backtrack(0, nums, statuses);
+    }
+
+    public boolean backtrack(int index, int [] nums, Status [] statuses) {
+        if(index == nums.length - 1) return true;
+        if(statuses[index].equals(Status.BAD)) return false;
+        int maximumOffset = index + nums[index];
+        for(int i=index+1; i<=maximumOffset; i++) {
+            if(i<nums.length) {
+                if(backtrack(i, nums, statuses)) {
+                    return true;
+                }
+            }
+        }
+        statuses[index] = Status.BAD;
+        return false;
+    }
+    public static void main( String [] args) {
+        int [] test = new int [] {2, 0, 0};
+        JumpGame jumpGame = new JumpGame();
+        System.out.println(jumpGame.canJump(test));
     }
 }
 enum Status {
-    GOOD, BAD, UNKNOWN
+    BAD, UNKNOWN
 }
