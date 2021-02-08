@@ -45,6 +45,7 @@ import java.util.*;
  * -10^8 <= arr[i] <= 10^8
  */
 public class JumpGameIV {
+    /**
     public int minJumps(int[] arr) {
         int ans = 0;
         if(arr.length <= 1) return ans;
@@ -87,5 +88,58 @@ public class JumpGameIV {
             }
         }
         return ans;
+    }
+     **/
+    public int minJumps(int[] arr) {
+        if(arr == null || arr.length<=1) return 0;
+        //build the hash map
+        HashMap<Integer, List<Integer>> map = new HashMap();
+        for(int i=0; i<arr.length; i++) {
+            if(map.containsKey(arr[i])) {
+                map.get(arr[i]).add(i);
+            } else {
+                List<Integer> list = new ArrayList<>();
+                list.add(i);
+                map.put(arr[i], list);
+            }
+        }
+//        for(int i = 0; i<arr.length; i++) {
+//            map.computeIfAbsent(arr[i], v -> new ArrayList<>()).add(i);
+//        }
+        //index queue
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(0);
+        int step = 0;
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            step++;
+            for(int i=0; i<size; i++) {
+                int cur = queue.poll();
+                List<Integer> subList = map.get(arr[cur]);
+
+                if(cur > 0 && map.containsKey(arr[cur -1])) {
+                    queue.offer(cur-1);
+                }
+                if(cur + 1 < arr.length && map.containsKey(arr[cur + 1])) {
+                    if(cur + 1 == arr.length -1) {
+                        return step;
+                    }
+                    queue.offer(cur + 1);
+                }
+                if(subList != null && subList.size() > 0) {
+                    for(int j = 0; j< subList.size(); j++) {
+                        int temp = subList.get(j);
+                        if(temp != cur && map.containsKey(arr[temp])) {
+                            if(temp == arr.length-1) {
+                                return step;
+                            }
+                            queue.offer(temp);
+                        }
+                    }
+                }
+                map.remove(arr[cur]);
+            }
+        }
+        return step;
     }
 }
