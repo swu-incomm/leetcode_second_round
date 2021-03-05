@@ -41,6 +41,6 @@ public class ShortestUnsortedContinuousSubarray {
                 rp = Math.max(rp, i);
             }
         }
-        return rp- lp + 1;
+        return rp- lp >= 0 ? rp-lp +1:0;
     }
 }
