@@ -81,7 +81,7 @@ public class SubtreeOfAnotherTree {
         } else if(isSameTree(s, t)) {
             return true;
         } else {
-            return isSameTree(s.left, t) || isSameTree(s.right, t);
+            return isSubtree2(s.left, t) || isSubtree2(s.right, t);
         }
     }
 

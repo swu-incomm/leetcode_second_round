@@ -1,5 +1,3 @@
-import sun.text.normalizer.Trie;
-
 /**
  * You should design a data structure that supports adding new words and finding if a string matches any previously added string.
  *
