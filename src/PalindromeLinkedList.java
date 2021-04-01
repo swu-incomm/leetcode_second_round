@@ -13,47 +13,47 @@ Follow up:
 Could you do it in O(n) time and O(1) space?
  */
 public class PalindromeLinkedList {
-    public boolean isPalindrome(ListNode head) {
-        if(head == null || head.next == null) return true;
-        ListNode p1 = head, p2 = head;
-        while(p2 != null && p2.next != null) {
-            p1 = p1.next;
-            p2 = p2.next.next;
-        }
-        //there is odd number of nodes
-        if(p2 != null) p1 = p1.next;
-        System.out.println(p1.val);
-        p1 = reverseIterative(p1);
-        p2 = head;
-
-        while(p1 != null) {
-            if(p1.val != p2.val) return false;
-            p1 = p1.next;
-            p2 = p2.next;
-        }
-        return true;
-    }
-
-    public ListNode reverseIterative(ListNode head) {
-        if(head == null || head.next == null) return head;
-        ListNode prev = null;
-        ListNode curr = head;
-        while(curr != null) {
-            ListNode temp = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = temp;
-        }
-        return prev;
-    }
-
-    public ListNode reverseRecursive(ListNode head) {
-        if(head == null || head.next == null) return head;
-        ListNode p = reverseRecursive(head.next);
-        head.next.next = head;
-        head.next = null;
-        return p;
-    }
+//    public boolean isPalindrome(ListNode head) {
+//        if(head == null || head.next == null) return true;
+//        ListNode p1 = head, p2 = head;
+//        while(p2 != null && p2.next != null) {
+//            p1 = p1.next;
+//            p2 = p2.next.next;
+//        }
+//        //there is odd number of nodes
+//        if(p2 != null) p1 = p1.next;
+//        System.out.println(p1.val);
+//        p1 = reverseIterative(p1);
+//        p2 = head;
+//
+//        while(p1 != null) {
+//            if(p1.val != p2.val) return false;
+//            p1 = p1.next;
+//            p2 = p2.next;
+//        }
+//        return true;
+//    }
+//
+//    public ListNode reverseIterative(ListNode head) {
+//        if(head == null || head.next == null) return head;
+//        ListNode prev = null;
+//        ListNode curr = head;
+//        while(curr != null) {
+//            ListNode temp = curr.next;
+//            curr.next = prev;
+//            prev = curr;
+//            curr = temp;
+//        }
+//        return prev;
+//    }
+//
+//    public ListNode reverseRecursive(ListNode head) {
+//        if(head == null || head.next == null) return head;
+//        ListNode p = reverseRecursive(head.next);
+//        head.next.next = head;
+//        head.next = null;
+//        return p;
+//    }
 
     public static void main(String [] args) {
         ListNode a = new ListNode(1);
@@ -65,5 +65,43 @@ public class PalindromeLinkedList {
         c.next = d;
         PalindromeLinkedList palindromeLinkedList = new PalindromeLinkedList();
         System.out.println(palindromeLinkedList.isPalindrome(a));
+    }
+    public boolean isPalindrome(ListNode head) {
+        if(head == null || head.next == null) return true;
+        ListNode p1 = head, p2 = head;
+        while(p2 != null && p2.next != null) {
+            p1 = p1.next;
+            p2 = p2.next.next;
+        }
+        //ji shu
+        if(p2 != null) p1 = p1.next;
+        ListNode p1Head = reverseLinkedList(p1);
+        p2 = head;
+        while(p1Head != null) {
+            if(p1Head.val != p2.val) return false;
+            p1Head = p1Head.next;
+            p2 = p2.next;
+        }
+        return true;
+    }
+    private ListNode reverseLinkedList(ListNode head) {
+        if(head == null || head.next == null) return head;
+        ListNode prev = null;
+        ListNode node = head;
+        while(node != null) {
+            ListNode temp = node.next;
+            node.next = prev;
+            prev = node;
+            node = temp;
+        }
+        return prev;
+    }
+
+    private ListNode reverseLinkedListRecursive(ListNode head) {
+        if(head == null || head.next == null) return head;
+        ListNode headOfReversedList = reverseLinkedListRecursive(head.next);
+        head.next.next = head;
+        head.next = null;
+        return headOfReversedList;
     }
 }
