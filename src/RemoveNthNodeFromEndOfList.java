@@ -20,18 +20,22 @@
  */
 public class RemoveNthNodeFromEndOfList {
     public ListNode removeNthFromEnd(ListNode head, int n) {
+        if(head.next == null) return null;
         ListNode slow = head, fast = head;
         ListNode prev = null;
-        for(int i = 0; i<n;i++) fast = fast.next;
+        while(n-- > 0) {
+            fast = fast.next;
+        }
         while(fast != null) {
             prev = slow;
             fast = fast.next;
             slow = slow.next;
         }
-        if(prev == null) {
-            return head.next;
+        if(prev != null) {
+            prev.next = slow.next;
+        } else {
+            head = head.next;
         }
-        prev.next = prev.next.next;
         return head;
     }
     public static void main(String [] args) {

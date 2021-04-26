@@ -12,24 +12,50 @@ import java.util.HashMap;
  * Constraints:
  *
  * The length of the array is in range [1, 20,000].
- * The range of numbers in the array is [-1000, 1000] and the range of the integer k is [-1e7, 1e7].
+ * The range of numbers in the array is [ e range of the integer k is [-1e7, 1e7].
  */
 public class SubarraySumEqualsK {
 
     //solution 1, cumulative sum
-    public int subarraySumCumulativeSum(int[] nums, int k) {
-        int [] cumulativeSum = new int [nums.length + 1];
-        int temp = 0;
+    public int subarraySumCumulativeSumMemo(int[] nums, int k) {
+        int [] cumulativeSum = new int [nums.length];
         int count = 0;
+        cumulativeSum[0] = nums[0];
         for(int i = 1; i<cumulativeSum.length; i++) {
-            temp += nums[i-1];
-            cumulativeSum[i] = temp;
+           cumulativeSum[i] += nums[i] + cumulativeSum[i-1];
         }
-        for(int i = 0; i<nums.length; i++) {
-            for(int j =i; j<nums.length; j++) {
-                if(cumulativeSum[j+1] - cumulativeSum[i] == k) {
+        for(int i : cumulativeSum) {
+            System.out.println(i);
+        }
+        for(int i=0; i<nums.length; i++) {
+            for(int j=i; j<nums.length; j++) {
+                int tempSum;
+                if(i != j) {
+                    if(i != 0) {
+                        tempSum = cumulativeSum[j] - cumulativeSum[i-1];
+                    } else {
+                        tempSum = cumulativeSum[j];
+                    }
+                } else {
+                    tempSum = nums[i];
+                }
+                if(tempSum == k) {
                     count++;
                 }
+            }
+        }
+        return count;
+    }
+
+    //solution 2, cumulative sum no memo
+    public int subarraySumCumulativeSumNoMemo(int[] nums, int k) {
+        int count = 0;
+        for(int i=0; i<nums.length; i++) {
+            int cumuBase = 0;
+            for(int j=i; j<nums.length; j++) {
+                cumuBase+=nums[j];
+                if (cumuBase == k)
+                    count++;
             }
         }
         return count;
@@ -51,7 +77,7 @@ public class SubarraySumEqualsK {
     }
     public static void main(String [] args) {
         SubarraySumEqualsK subarraySumEqualsK = new SubarraySumEqualsK();
-        int [] test = {1, 2, 3};
-        subarraySumEqualsK.subarraySumCumulativeSum(test, 3);
+        int [] test = {1, 1, 1};
+        System.out.println(subarraySumEqualsK.subarraySumCumulativeSumMemo(test, 2));
     }
 }
