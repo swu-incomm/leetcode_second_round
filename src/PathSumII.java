@@ -33,14 +33,14 @@ public class PathSumII {
     }
     public void dfs(TreeNode root, int sum, List<Integer> subList) {
         if (root == null) return;
+        int temp = sum - root.val;
         subList.add(root.val);
-        if(root.left == null && root.right == null && sum == root.val) {
+        if(temp == 0 && root.left == null && root.right == null) {
             ans.add(new ArrayList<>(subList));
-            subList.remove(subList.size()-1);
-            return;
+        } else {
+            dfs(root.left, temp, subList);
+            dfs(root.right, temp, subList);
         }
-        dfs(root.left, sum - root.val, subList);
-        dfs(root.right, sum-root.val, subList);
         subList.remove(subList.size()-1);
     }
 }

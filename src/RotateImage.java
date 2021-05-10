@@ -51,7 +51,6 @@ public class RotateImage {
         int right = n-1;
         int bottom = n-1;
         while(n > 1) {
-            n-=2;
             for(int i=0;i<n-1;i++) {
                 int temp = matrix[top][left + i];
                 matrix[top][left+i] = matrix[bottom-i][left];
@@ -63,6 +62,7 @@ public class RotateImage {
             bottom--;
             right--;
             left++;
+            n-=2;
         }
     }
 }

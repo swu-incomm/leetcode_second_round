@@ -17,17 +17,19 @@ Example 4:
 
 Input: 45
 Output: false
+
+Constraints:
+
+-231 <= n <= 231 - 1
+
+
 Follow up:
 Could you do it without using any loop / recursion?
  */
 public class PowerOfThree {
     public boolean isPowerOfThree(int n) {
-        if(n == 1) return true;
-        if(n % 3 != 0 || n == 0) return false;
+        if(n == 0 || n == 3) return true;
+        if(n%3!=0) return false;
         return isPowerOfThree(n/3);
-    }
-    public static void main(String [] args) {
-        PowerOfThree powerOfThree = new PowerOfThree();
-        System.out.println(powerOfThree.isPowerOfThree(27));
     }
 }
