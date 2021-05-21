@@ -28,28 +28,34 @@ import java.util.List;
  * 1.  5 -> 3
  * 2.  5 -> 2 -> 1
  * 3. -3 -> 11
+ *
+ * Constraints:
+ *
+ * The number of nodes in the tree is in the range [0, 1000].
+ * -109 <= Node.val <= 109
+ * -1000 <= targetSum <= 1000
  */
 public class PathSumIII {
     int ans = 0;
-    public int pathSum(TreeNode root, int sum) {
-        if(root == null) return 0;
-        List<Integer> record = new ArrayList<>();
-        dfs(root, sum, record);
+    public int pathSum(TreeNode root, int targetSum) {
+        if(root == null) return ans;
+        List<Integer> list = new ArrayList<>();
+        dfs(root, targetSum, list);
         return ans;
     }
 
-    public void dfs(TreeNode root, int sum, List<Integer> record) {
+    public void dfs(TreeNode root, int target, List<Integer> list) {
         if(root == null) return;
-        record.add(root.val);
-
-        dfs(root.left, sum, record);
-        dfs(root.right, sum, record);
-
+        list.add(root.val);
+        dfs(root.left, target, list);
+        dfs(root.right, target, list);
         int temp = 0;
-        for(int i = record.size()-1; i>=0; i--) {
-            temp += record.get(i);
-            if(temp == sum) ans++;
+        for(int i = list.size()-1; i>=0; i--) {
+            temp += list.get(i);
+            if(temp == target) {
+                ans++;
+            }
         }
-        record.remove(record.size()-1);
+        list.remove(list.size()-1);
     }
 }

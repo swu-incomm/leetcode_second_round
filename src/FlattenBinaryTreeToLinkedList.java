@@ -24,20 +24,18 @@
  */
 public class FlattenBinaryTreeToLinkedList {
     public void flatten(TreeNode root) {
-        if(root == null) return;
-        flatten(root.left);
-        flatten(root.right);
+       if(root == null) return;
+       TreeNode tempLeft = root.left;
+       TreeNode tempRight = root.right;
 
-        if(root.left!= null) {
-            TreeNode tempRight = root.right;
-            root.right = root.left;
-            root.left = null;
-            //we need a temp variable to save root
-            TreeNode leftLastNode = root;
-            while(leftLastNode.right != null) {
-                leftLastNode = leftLastNode.right;
-            }
-            leftLastNode.right = tempRight;
-        }
+       flatten(tempLeft);
+       flatten(tempRight);
+
+       root.left = null;
+       root.right = tempLeft;
+       while(root.right!= null) {
+           root = root.right;
+       }
+       root.right = tempRight;
     }
 }
