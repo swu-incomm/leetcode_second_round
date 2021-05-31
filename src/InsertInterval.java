@@ -46,4 +46,28 @@ public class InsertInterval {
         InsertInterval insertInterval = new InsertInterval();
         insertInterval.insert(test, interval);
     }
+    public int[][] insert2(int[][] intervals, int[] newInterval) {
+        List<int []> newIntervals = new ArrayList<>();
+        for(int [] interval : intervals) {
+            newIntervals.add(interval);
+        }
+        newIntervals.add(newInterval);
+        Collections.sort(newIntervals, (a, b)->a[0] - b[0]);
+        List<int []> ans = new ArrayList<>();
+        int [] cur = newIntervals.get(0);
+        int curEnd = cur[1];
+        for(int i=1; i<newIntervals.size();i++) {
+            int [] temp = newIntervals.get(i);
+            if(temp[0] <= curEnd) {
+                curEnd = Math.max(curEnd, temp[1]);
+                cur[1] = curEnd;
+            } else {
+                ans.add(cur);
+                cur = temp;
+                curEnd = temp[1];
+            }
+        }
+        ans.add(cur);
+        return ans.toArray(new int [ans.size()][]);
+    }
 }

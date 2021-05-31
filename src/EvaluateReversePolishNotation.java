@@ -31,8 +31,14 @@ import java.util.Stack;
  * = (0 + 17) + 5
  * = 17 + 5
  * = 22
+ *
+ * Constraints:
+ *
+ * 1 <= tokens.length <= 104
+ * tokens[i] is either an operator: "+", "-", "*", or "/", or an integer in the range [-200, 200].
  */
 public class EvaluateReversePolishNotation {
+    /*
     public int evalRPN(String[] tokens) {
         int ans = 0;
         if(tokens == null || tokens.length ==0) return ans;
@@ -56,6 +62,39 @@ public class EvaluateReversePolishNotation {
                 stack.push(v2/v1);
             } else {
                 stack.push(Integer.parseInt(tokens[i]));
+            }
+        }
+        return stack.pop();
+    }
+
+     */
+
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> stack = new Stack();
+        for(int i=0; i<tokens.length; i++) {
+            String temp = tokens[i];
+            if(temp.equals("+")) {
+                int a = stack.pop();
+                int b = stack.pop();
+                stack.push(a + b);
+            }
+            else if(temp.equals("-")) {
+                int a = stack.pop();
+                int b = stack.pop();
+                stack.push(b - a);
+            }
+            else if(temp.equals("*")) {
+                int a = stack.pop();
+                int b = stack.pop();
+                stack.push(a * b);
+            }
+            else if(temp.equals("/")) {
+                int a = stack.pop();
+                int b = stack.pop();
+                stack.push(b / a);
+            }
+            else {
+                stack.push(Integer.valueOf(temp));
             }
         }
         return stack.pop();

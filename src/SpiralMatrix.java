@@ -62,4 +62,42 @@ public class SpiralMatrix {
         SpiralMatrix spiralMatrix = new SpiralMatrix();
         spiralMatrix.spiralOrder(test).stream().forEach(System.out::println);
     }
+
+    /**
+     * Constraints:
+     *
+     * m == matrix.length
+     * n == matrix[i].length
+     * 1 <= m, n <= 10
+     * -100 <= matrix[i][j] <= 100
+     * @param matrix
+     * @return
+     */
+    public List<Integer> spiralOrder2(int[][] matrix) {
+        List<Integer> ans = new ArrayList<>();
+        int size = matrix.length * matrix[0].length;
+        int top = 0;
+        int left = 0;
+        int right = matrix[0].length-1;
+        int bottom = matrix.length-1;
+        while(ans.size() < size) {
+            for(int i = left; i<=right && ans.size() < size; i++) {
+                ans.add(matrix[top][i]);
+            }
+            top++;
+            for(int i=top; i<=bottom && ans.size() < size; i++) {
+                ans.add(matrix[i][right]);
+            }
+            right--;
+            for(int i=right; i>=left && ans.size() < size; i--) {
+                ans.add(matrix[bottom][i]);
+            }
+            bottom--;
+            for(int i=bottom; i>=top && ans.size() < size; i--) {
+                ans.add(matrix[i][left]);
+            }
+            left++;
+        }
+        return ans;
+    }
 }

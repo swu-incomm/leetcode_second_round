@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Given a collection of intervals, merge all overlapping intervals.
@@ -24,7 +21,6 @@ public class MergeIntervals {
         Arrays.sort(intervals, Comparator.comparingInt(arr -> arr[0]));
         List<int[]> ans = new ArrayList<>();
         int [] currentInterval = intervals[0];
-        int currentBegin = currentInterval[0];
         int currentEnd = currentInterval[1];
 
         for(int i = 1; i<intervals.length;i++) {
@@ -34,7 +30,6 @@ public class MergeIntervals {
             }else {
                 ans.add(currentInterval);
                 currentInterval = intervals[i];
-                currentBegin = currentInterval[0];
                 currentEnd = currentInterval[1];
             }
         }
@@ -52,5 +47,31 @@ public class MergeIntervals {
         };
         MergeIntervals mergeIntervals = new MergeIntervals();
         mergeIntervals.merge(test);
+    }
+
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        List<int []> newIntervals = new ArrayList<>();
+        for(int [] interval : intervals) {
+            newIntervals.add(interval);
+        }
+        newIntervals.add(newInterval);
+        Collections.sort(newIntervals, (a, b)->a[0] - b[0]);
+        List<int []> ans = new ArrayList<>();
+        int [] cur = newIntervals.get(0);
+        int curEnd = cur[1];
+        for(int i=1; i<newIntervals.size();i++) {
+            int [] temp = newIntervals.get(i);
+            if(temp[0] <= curEnd) {
+                curEnd = Math.max(curEnd, temp[1]);
+                cur[1] = curEnd;
+            } else {
+                ans.add(cur);
+                cur = temp;
+                curEnd = temp[1];
+                continue;
+            }
+        }
+        ans.add(cur);
+        return ans.toArray(new int [ans.size()][]);
     }
 }
