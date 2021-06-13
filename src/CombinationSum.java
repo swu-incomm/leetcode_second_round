@@ -43,7 +43,7 @@ public class CombinationSum {
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> ans = new ArrayList<>();
         if(candidates == null || candidates.length == 0) return ans;
-        Arrays.sort(candidates);
+
         backtrack(candidates, 0, ans, new ArrayList<>(), target);
         return ans;
     }

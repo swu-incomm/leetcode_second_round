@@ -38,6 +38,7 @@ import java.util.Arrays;
  * Follow up: What if negative numbers are allowed in the given array? How does it change the problem?
  * What limitation we need to add to the question to allow negative numbers?
  */
+import java.util.*;
 public class CombinationSumIV {
     //brute force approach
     /*
@@ -73,45 +74,36 @@ public class CombinationSumIV {
 //        }
 //        return count;
 //    }
-
-    //backtrack with dp
+    //top down
+    HashMap<Integer, Integer> map= new HashMap<>();
     public int combinationSum4(int[] nums, int target) {
-        int dp [] = new int [target +1];
-        Arrays.fill(dp, -1);
-        dp[0] = 1;
-        backtrack(nums, target, dp);
-        return dp[target];
-    }
-
-    public int backtrack(int [] nums, int target, int [] dp) {
-        //why set to -1, because in some case dp[n] could be 0 due to there is no such combination
-        // then we have to use (dp[target] > 0)
-        //this will increase some duplicate calculation (dp[i] == 0 could be havn't updated as well as 0 combination)
-        //not calculated yet
-        if(dp[target] > -1) {
-            return dp[target];
+        if(target == 0) {
+            return 1;
         }
-        int count = 0;
-        for(int i: nums) {
+        if(this.map.containsKey(target)) return map.get(target);
+        int res = 0;
+        for(int i : nums) {
             if(i <= target) {
-                count += backtrack(nums, target - i, dp);
+                res += combinationSum4(nums, target - i);
             }
         }
-        dp[target] = count;
-        return count;
+        map.put(target, res);
+        return res;
     }
 
-    //pure dp
+    //pure dp bottom up
     public int combinationSum4PureDP(int[] nums, int target) {
         int[] dp = new int[target + 1];
         dp[0] = 1;
-        for (int i = 1; i < dp.length; i++) {
-            for (int j = 0; j < nums.length; j++) {
-                if (i - nums[j] >= 0) {
-                    dp[i] += dp[i - nums[j]];
+        // with number 0, we can like choose nothing from the nums array, which forms 1 solution
+        for(int i=1; i<= target; i++) {
+            for(int j : nums) {
+                if(i - j >= 0) {
+                    dp[i] += dp[i-j];
                 }
             }
         }
+
         return dp[target];
     }
 

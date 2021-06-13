@@ -1,4 +1,4 @@
-
+import java.util.HashMap;
 
 /**
  * Given preorder and inorder traversal of a tree, construct the binary tree.
@@ -18,27 +18,33 @@
  *     /  \
  *    15   7
  *
+ *    1 <= preorder.length <= 3000
+ * inorder.length == preorder.length
+ * -3000 <= preorder[i], inorder[i] <= 3000
+ * preorder and inorder consist of unique values.
+ * Each value of inorder also appears in preorder.
+ * preorder is guaranteed to be the preorder traversal of the tree.
+ * inorder is guaranteed to be the inorder traversal of the tree.
+ *
  *    两个重点， 第一是传参数
  *    第二是如何判断return null
  */
 public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-        if(preorder == null || inorder == null || preorder.length == 0 || inorder.length == 0) return null;
-        return helper(preorder, inorder, 0, preorder.length-1, 0, inorder.length-1);
-    }
 
-    public TreeNode helper(int [] preOrder, int [] inOrder, int preStart, int preEnd, int inStart, int inEnd) {
-        if(preStart > preOrder.length || inStart > inEnd) return null;
-        TreeNode root = new TreeNode(preOrder[preStart]);
-        int index = 0;
-        for(int i = inStart; i<=inEnd; i++) {
-            if(inOrder[i] == root.val) {
-                index = i;
-                break;
+        HashMap <Integer, Integer> inorderMap = new HashMap<>();
+        public TreeNode buildTree(int[] preorder, int[] inorder) {
+            for(int i=0; i<inorder.length; i++) {
+                this.inorderMap.put(inorder[i], i);
             }
+            TreeNode root = construct(preorder, inorder, 0, inorder.length-1, 0);
+            return root;
         }
-        root.left = helper(preOrder, inOrder, preStart + 1, preStart + index-inStart, inStart, index-1);
-        root.right = helper(preOrder, inOrder, preStart + index - inStart +1, preEnd, index + 1, inEnd);
-        return root;
-    }
+        public TreeNode construct(int []preorder, int [] inorder, int inorderL, int inorderR, int preStart) {
+            if(inorderL < inorderR) return null;
+            TreeNode root = new TreeNode(preorder[preStart]);
+            int inOrderIndex = this.inorderMap.get(preorder[preStart]);
+            root.left = construct(preorder, inorder, inorderL, inOrderIndex-1, preStart + 1);
+            root.right = construct(preorder, inorder, inOrderIndex + 1, inorderR, preStart + inOrderIndex - inorderL + 1);
+            return root;
+        }
 }

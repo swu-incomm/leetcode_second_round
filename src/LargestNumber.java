@@ -62,4 +62,29 @@ public class LargestNumber {
         }
         return sb.toString();
     }
+
+    public static void main(String [] args) {
+    }
+
+    public String largestNumberRrdo(int[] nums) {
+        String [] stringArr = new String [nums.length];
+        int j=0;
+        for(int i : nums) {
+            stringArr[j++] = String.valueOf(i);
+        }
+        Arrays.sort(stringArr, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+               String a = o1 + o2;
+               String b = o2 + o1;
+               return b.compareTo(a);
+            }
+        });
+        if(stringArr[0].equals("0")) return "0";
+        String ans = "";
+        for(String i : stringArr) {
+            ans+=i;
+        }
+        return ans;
+    }
 }

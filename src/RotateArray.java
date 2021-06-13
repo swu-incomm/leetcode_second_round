@@ -18,21 +18,49 @@ Note:
 
 Try to come up as many solutions as you can, there are at least 3 different ways to solve this problem.
 Could you do it in-place with O(1) extra space?
+1 <= nums.length <= 105
+-231 <= nums[i] <= 231 - 1
+0 <= k <= 105
+
  */
 public class RotateArray {
-    public void helper(int [] nums, int l, int r) {
-        while(l < r) {
-            int temp = nums[l];
-            nums[l] = nums[r];
-            nums[r] = temp;
-            l++;r--;
+//    public void helper(int [] nums, int l, int r) {
+//        while(l < r) {
+//            int temp = nums[l];
+//            nums[l] = nums[r];
+//            nums[r] = temp;
+//            l++;r--;
+//        }
+//    }
+//    public void rotate(int[] nums, int k) {
+//        if(nums == null || nums.length == 0 || k == 0) return;
+//        k = k % nums.length;
+//        helper(nums,0,nums.length-1-k);
+//        helper(nums,nums.length-k,nums.length-1);
+//        helper(nums,0,nums.length-1);
+//    }
+
+    public void rotate(int[] nums, int k) {
+        k = k % nums.length;
+        reverseArray(nums, nums.length-k, nums.length-1);
+        reverseArray(nums, 0, nums.length-1-k);
+        reverseArray(nums, 0, nums.length-1);
+    }
+    public void reverseArray(int [] nums, int left, int right) {
+        while(left < right) {
+            int temp = nums[left];
+            nums[left++] = nums[right];
+            nums[right--] = temp;
         }
     }
-    public void rotate(int[] nums, int k) {
-        if(nums == null || nums.length == 0 || k == 0) return;
-        k = k % nums.length;
-        helper(nums,0,nums.length-1-k);
-        helper(nums,nums.length-k,nums.length-1);
-        helper(nums,0,nums.length-1);
+
+    public void rotate2(int[] nums, int k) {
+        int[] a = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            a[(i + k)%nums.length] = nums[i];
+        }
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = a[i];
+        }
     }
 }

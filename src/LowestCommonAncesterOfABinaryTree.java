@@ -31,21 +31,37 @@
  */
 public class LowestCommonAncesterOfABinaryTree {
 
-    public static TreeNode res;
+//    public static TreeNode res;
+//    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+//        helper( root,  p,  q);
+//        return res;
+//    }
+//
+//    public int helper(TreeNode root, TreeNode p, TreeNode q) {
+//        if(root == null) return 0;
+//        int left = helper(root.left, p, q);
+//        int right = helper(root.right, p, q);
+//        int mid = (root.val == p.val || root.val == q.val) ? 1 : 0;
+//        if((left + right + mid) >= 2) {
+//            this.res = root;
+//        }
+//        return (left + right + mid >0 ? 1 : 0);
+//    }
+TreeNode ans;
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        helper( root,  p,  q);
-        return res;
+        dfs(root, p, q);
+        return ans;
     }
 
-    public int helper(TreeNode root, TreeNode p, TreeNode q) {
-        if(root == null) return 0;
-        int left = helper(root.left, p, q);
-        int right = helper(root.right, p, q);
-        int mid = (root.val == p.val || root.val == q.val) ? 1 : 0;
-        if((left + right + mid) >= 2) {
-            this.res = root;
+    public boolean dfs(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null) {
+            return false;
         }
-        return (left + right + mid >0 ? 1 : 0);
+        int midVal = 0;
+        if(root.val == p.val || root.val == q.val) midVal = 1;
+        int leftVal = dfs(root.left, p, q) ? 1 : 0;
+        int rightVal = dfs(root.right, p, q) ? 1 : 0;
+        if(midVal + leftVal + rightVal == 2) ans = root;
+        return midVal + leftVal + rightVal >0 ? true : false;
     }
-
 }
