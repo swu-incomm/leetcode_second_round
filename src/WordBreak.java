@@ -24,44 +24,48 @@ import java.util.*;
  *
  * Input: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
  * Output: false
+ * Constraints:
+ *
+ * 1 <= s.length <= 300
+ * 1 <= wordDict.length <= 1000
+ * 1 <= wordDict[i].length <= 20
+ * s and wordDict[i] consist of only lowercase English letters.
+ * All the strings of wordDict are unique.
  */
 public class WordBreak {
-
-    // classic dfs solution
+    //First solution top-down backtrack with memorization
     public boolean wordBreak(String s, List<String> wordDict) {
-        Set<String> dictSet = new HashSet<>();
-        for (String word : wordDict) {
-            dictSet.add(word);
-        }
-        Map<String, Boolean> cache = new HashMap<>();
-        return dfs(s, dictSet, cache);
+        return backtrack(0, s, wordDict, new Boolean[s.length()]);
     }
 
-    public boolean dfs(String s, Set<String> set, Map<String, Boolean> map) {
-        if(set.contains(s)) return true;
-        if(map.containsKey(s)) return map.get(s);
-        for(int i = 1; i<s.length(); i++) {
-            if(set.contains(s.substring(0, i)) && dfs(s.substring(i, s.length()), set, map)) {
-                map.put(s, true);
-                return true;
+    public boolean backtrack(int index, String s, List<String> wordDict, Boolean [] memorization) {
+        if(index == s.length()) {
+            return true;
+        }
+        if(memorization[index] != null) {
+            return memorization[index];
+        }
+        boolean res = false;
+        for(int i=index +1; i<=s.length(); i++) {
+            if(wordDict.contains(s.substring(index, i)) && backtrack(i, s, wordDict, memorization)) {
+                res = true;
+                break;
             }
         }
-        map.put(s, false);
-        return false;
+        memorization[index] = res;
+        return res;
     }
 
-    public boolean wordBreakDp(String s, List<String> wordDict) {
-        Set<String> dictSet = new HashSet<>();
-        for (String word : wordDict) {
-            dictSet.add(word);
-        }
+    //Second solution bottom up dp
+    public boolean wordBreakDpBottomUp(String s, List<String> wordDict) {
         boolean [] dp = new boolean[s.length() + 1];
         dp[0] = true;
-        for(int i = 1; i<=s.length(); i++) {
-            for(int j = 0; j<i; j++) {
-                if(dp[j] && dictSet.contains(s.substring(j, i))) {
-                    dp[i] = true;
-                    break;
+        for(int i=1; i<=s.length(); i++) {
+            for(int j=0; j<wordDict.size(); j++) {
+                String temp = wordDict.get(j);
+                int diff = i - temp.length();
+                if(diff >= 0 && dp[diff]) {
+                    dp[i] = s.substring(diff, i).equals(temp);
                 }
             }
         }

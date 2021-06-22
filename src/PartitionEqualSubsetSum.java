@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /**
  * Given a non-empty array containing only positive integers, find if the array can be partitioned into two subsets
  * such that the sum of elements in both subsets is equal.
@@ -33,51 +35,58 @@ public class PartitionEqualSubsetSum {
     public static void main(String [] args) {
         int [] nums = {23,13, 11, 7, 6, 5, 5};
         PartitionEqualSubsetSum partitionEqualSubsetSum = new PartitionEqualSubsetSum();
-        partitionEqualSubsetSum.canPartition(nums);
+        partitionEqualSubsetSum.canPartitionDP(nums);
     }
 
     public boolean canPartition(int[] nums) {
         int sum = 0;
-        for(int i: nums) {
-            sum+=i;
-        }
-        if(sum % 2 != 0) return false;
-        int [][] dp = new int [nums.length+1][sum+1];
-        sum = sum/2;
-        return recursive(nums, 0, 0, sum, dp);
+        for(int i: nums) sum+=i;
+        if(sum %2 != 0) return false;
+        sum/=2;
+        int [][] dp = new int [nums.length][sum + 1];
+        return backtrack(nums, 0, 0, sum, dp) || backtrack(nums, 0, nums[0], sum, dp);
     }
-    private boolean recursive(int [] nums, int index, int cur, int target, int [][] dp) {
+
+    public boolean backtrack(int [] nums, int index, int cur, int target, int [][]dp) {
         if(cur == target) {
+            dp[index][cur] = 1;
             return true;
         }
-        if(index == nums.length || dp[index][cur] == 1) {
-            dp[index][cur] = 1;
+        if(index == nums.length || cur > target) {
             return false;
         }
-        boolean result = recursive(nums, index + 1, cur + nums[index], target, dp) || recursive(nums, index + 1, cur, target, dp);
-        dp[index][cur] = result==true ? 0 : 1;
-        return result;
+        if(dp[index][cur] != 0) {
+            return dp[index][cur] == 1 ? true : false;
+        }
+        boolean res = false;
+        for(int i=index + 1; i<nums.length; i++) {
+            res = backtrack(nums, i, cur + nums[i], target, dp) || backtrack(nums, i, cur, target, dp);
+            if(res) break;
+        }
+        dp[index][cur] = res ? 1 : -1;
+        return res;
     }
 
     public boolean canPartitionDP(int[] nums) {
         int sum = 0;
-        for(int i: nums) {
-            sum+=i;
+        for(int i: nums) sum+=i;
+        if(sum %2 != 0) return false;
+        sum/=2;
+        //dp
+        boolean [][] dp = new boolean [nums.length][sum + 1];
+        dp[0][0] = true;
+        for (int i = 1; i < nums.length; i++) {
+            dp[i][0] = true;
         }
-        if(sum % 2 != 0) return false;
-        sum = sum/2;
-        int [][] dp = new int [nums.length][sum+1];
-        for(int i=0; i<nums.length; i++) {
-            dp[i][0] = 1;
-        }
-        for(int i=0; i<nums.length;i++) {
-            for(int j=1; j<=sum;j++) {
-                if(nums[i] <= j) {
-                    dp[i][j] = dp[i][j-nums[i]];
+        for(int i =1; i<nums.length; i++) {
+            for(int j =0; j<=sum; j++) {
+                if(j - nums[i] >= 0) {
+                    dp[i][j] = dp[i-1][j] || dp[i-1][j - nums[i]];
+                } else {
+                    dp[i][j] = dp[i-1][j];
                 }
             }
         }
-
-        return dp[nums.length-1][sum] == 1;
+        return dp[nums.length-1][sum];
     }
 }

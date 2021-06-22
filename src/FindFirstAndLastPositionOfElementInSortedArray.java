@@ -23,44 +23,84 @@
  * -10^9 <= target <= 10^9
  */
 public class FindFirstAndLastPositionOfElementInSortedArray {
-    public int[] searchRange(int[] nums, int target) {
-        int [] result = new int [2];
-        result[0] = -1;
-        result[1] = -1;
-        if(nums == null || nums.length == 0) return result;
-        result[0] = findLeftBoundary(nums, target);
-        result[1] = findRightBoundary(nums, target);
+//    public int[] searchRange(int[] nums, int target) {
+//        int [] result = new int [2];
+//        result[0] = -1;
+//        result[1] = -1;
+//        if(nums == null || nums.length == 0) return result;
+//        result[0] = findLeftBoundary(nums, target);
+//        result[1] = findRightBoundary(nums, target);
+//
+//        return result;
+//    }
+//
+//    public int findLeftBoundary(int[] nums, int target) {
+//        int index = -1;
+//        int l = 0, r = nums.length-1;
+//        while(l <= r) {
+//            int mid = l + (r-l)/2;
+//            if(nums[mid] >= target) {
+//                r = mid -1;
+//            } else {
+//                l = mid + 1;
+//            }
+//            if(nums[mid] == target) index = mid;
+//        }
+//        return index;
+//    }
+//
+//    public int findRightBoundary(int[] nums, int target) {
+//        int index = -1;
+//        int l = 0, r = nums.length-1;
+//        while(l <= r) {
+//            int mid = l + (r-l)/2;
+//            if(nums[mid] <= target) {
+//                l = mid + 1;
+//            } else {
+//                r = mid - 1;
+//            }
+//            if(nums[mid] == target) index = mid;
+//        }
+//        return index;
+//    }
+public int[] searchRange(int[] nums, int target) {
+    int [] ans = new int [2];
+    ans[0] = binarySearchLeftBound(nums,target);
+    ans[1] = binarySearchRightBound(nums, target);
+    return ans;
+}
 
-        return result;
-    }
-
-    public int findLeftBoundary(int[] nums, int target) {
-        int index = -1;
-        int l = 0, r = nums.length-1;
-        while(l <= r) {
-            int mid = l + (r-l)/2;
+    public int binarySearchLeftBound(int [] nums,int target) {
+        int left = 0, right = nums.length-1;
+        int ans = -1;
+        while(left <= right) {
+            int mid = left + (right - left)/2;
             if(nums[mid] >= target) {
-                r = mid -1;
+                right = mid - 1;
+                if(target == nums[mid]) {
+                    ans = mid;
+                }
             } else {
-                l = mid + 1;
+                left = mid + 1;
             }
-            if(nums[mid] == target) index = mid;
         }
-        return index;
+        return ans;
     }
 
-    public int findRightBoundary(int[] nums, int target) {
-        int index = -1;
-        int l = 0, r = nums.length-1;
-        while(l <= r) {
-            int mid = l + (r-l)/2;
+    public int binarySearchRightBound(int [] nums,int target) {
+        int left = 0, right = nums.length-1;
+        int ans = -1;
+        while(left <= right) {
+            int mid = left + (right - left)/2;
             if(nums[mid] <= target) {
-                l = mid + 1;
+                left = mid + 1;
+                if(target == nums[mid]) {
+                    ans = mid;
+                }
             } else {
-                r = mid - 1;
+                right = mid - 1;
             }
-            if(nums[mid] == target) index = mid;
         }
-        return index;
+        return ans;
     }
 }

@@ -27,10 +27,10 @@ public class CountPrimes {
 //        }
 //        return count;
 //    }
-    public static void main(String [] args) {
-        CountPrimes countPrimes = new CountPrimes();
-        countPrimes.countPrimes(10);
-    }
+//    public static void main(String [] args) {
+//        CountPrimes countPrimes = new CountPrimes();
+//        countPrimes.countPrimes(10);
+//    }
     //traditional ways
     //exceed time limit
     public int countPrimes(int n) {
@@ -61,5 +61,28 @@ public class CountPrimes {
             if(!table[i]) count++;
         }
         return count;
+    }
+
+    public int countPrimesRedo(int n) {
+        if(n <2) return 0;
+        boolean [] table  = new boolean[n + 1];
+        Arrays.fill(table, true);
+        for(int i=2; i * i <n; i++) {
+            if(table[i]) {
+                for(int j=i * i; j <n; j+=i) {
+                    table[j] = false;
+                }
+            }
+        }
+        int count = 0;
+        for(int i=2; i<n; i++) {
+            count = table[i] ? count + 1 : count;
+        }
+        return count;
+    }
+
+    public static void main(String [] args) {
+        CountPrimes countPrimes = new CountPrimes();
+       countPrimes.countPrimesRedo(10);
     }
 }

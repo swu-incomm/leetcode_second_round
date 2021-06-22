@@ -48,6 +48,68 @@
 import java.util.*;
 public class SearchSuggestionsSystem {
     public List<List<String>> suggestedProducts(String[] products, String searchWord) {
-        return null;
+        List<List<String>> res = new ArrayList<>();
+        Trie trie = new Trie();
+        for(String i : products) {
+            trie.insert(i);
+        }
+        String temp = new String();
+        for(char c : searchWord.toCharArray()) {
+            temp += c;
+            res.add(trie.findWordByPrefix(temp));
+        }
+        return res;
+    }
+    class Trie {
+        class TrieNode{
+            boolean isWord;
+            TrieNode [] children = new TrieNode[26];
+        }
+        private TrieNode root;
+        public Trie() {
+            this.root = new TrieNode();
+        }
+        private List<String> subAns;
+
+        public void insert(String word) {
+            TrieNode node = root;
+            for(int i=0; i<word.length(); i++) {
+                char ch = word.charAt(i);
+                if(node.children[ch - 'a'] == null) {
+                    node.children[ch - 'a'] = new TrieNode();
+                }
+                node = node.children[ch - 'a'];
+            }
+            node.isWord = true;
+        }
+
+        public List<String> findWordByPrefix(String prefix) {
+            this.subAns = new ArrayList<>();
+            TrieNode node = this.root;
+            char [] chArr = prefix.toCharArray();
+            for(char c : chArr) {
+                if(node.children[c - 'a'] != null) {
+                    node = node.children[c - 'a'];
+                } else {
+                    return this.subAns;
+                }
+            }
+            dfs(prefix, node);
+            return this.subAns;
+        }
+
+        public void dfs(String prefix, TrieNode node) {
+            if(subAns.size() == 3) {
+                return;
+            }
+            if(node.isWord) {
+                subAns.add(prefix);
+            }
+            for(char i='a'; i<'z'; i++) {
+                if(node.children[i - 'a'] != null) {
+                    dfs(prefix + i, node.children[i - 'a']);
+                }
+            }
+        }
     }
 }

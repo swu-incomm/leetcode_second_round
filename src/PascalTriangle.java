@@ -16,7 +16,7 @@ Output:
 ]
  */
 public class PascalTriangle {
-    public List<List<Integer>> generate(int numRows) {
+    public List<List<Integer>> generate1(int numRows) {
         List<List<Integer>> ans = new ArrayList<>();
         List<Integer> firstRow = new ArrayList<>();
         firstRow.add(1);
@@ -52,4 +52,24 @@ public class PascalTriangle {
         }
 
     }
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> firstLayer = new ArrayList<>();
+        firstLayer.add(1);
+        res.add(firstLayer);
+        if(numRows == 1) return res;
+        for(int i=1; i<numRows; i++) {
+            List<Integer> prev = res.get(i-1);
+            List<Integer> cur = new ArrayList<>();
+            cur.add(1);
+            for(int j=1; j<i; j++) {
+                int temp = prev.get(j-1) + prev.get(j);
+                cur.add(temp);
+            }
+            cur.add(1);
+            res.add(cur);
+        }
+        return res;
+    }
+
 }
