@@ -74,8 +74,34 @@ public class MedianOfTwoSortedArrays {
     }
 
     public static void main(String [] args) {
-        int [] test1 = {};
-        int [] test2 = {2};
-        findMedianSortedArrays(test2, test1);
+//        int [] test1 = {};
+//        int [] test2 = {2};
+//        findMedianSortedArrays(test2, test1);
+
+        C c = new C();
+        c.printA();
+
+        B b = new B();
+        System.out.println(b.aa.a);
+        b.printA();
+
+    }
+}
+
+class A {
+    protected int a = 10;
+}
+
+class B extends A {
+    protected A aa = new A();
+    protected void printA() {
+        System.out.println(this.aa.a);
+    }
+}
+
+class C extends B {
+    protected B b = new B();
+    protected void printA() {
+        System.out.println(this.b.a);
     }
 }

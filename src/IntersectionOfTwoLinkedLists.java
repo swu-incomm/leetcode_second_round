@@ -40,6 +40,7 @@ The linked lists must retain their original structure after the function returns
 You may assume there are no cycles anywhere in the entire linked structure.
 Your code should preferably run in O(n) time and use only O(1) memory.
  */
+import java.util.*;
 public class IntersectionOfTwoLinkedLists {
     //solution1: hashSet
     //solution2: two pointers the goal is to eliminate the length difference of the two linked list
@@ -59,5 +60,31 @@ public class IntersectionOfTwoLinkedLists {
             }
         }
         return null;
+    }
+
+    public ListNode getIntersectionNodeHashSet(ListNode headA, ListNode headB) {
+        Set<ListNode> set = new HashSet<>();
+        while(headA != null) {
+            set.add(headA);
+            headA = headA.next;
+        }
+        while(headB != null) {
+            if(set.contains(headB)) {
+                return headB;
+            }
+            headB = headB.next;
+        }
+        return null;
+    }
+
+    public ListNode getIntersectionNodeTwoPointer(ListNode headA, ListNode headB) {
+        ListNode p1 = headA, p2 = headB;
+        while(p1 != p2) {
+            if(p1 == null) {p1 = headB;continue;}
+            if(p2 == null) {p2 = headA;continue;}
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+        return p1;
     }
 }
