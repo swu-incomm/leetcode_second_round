@@ -14,6 +14,7 @@ nums2 = [2,5,6],       n = 3
 Output: [1,2,2,3,5,6]
  */
 public class MergeSortedArray {
+    /**
     public void merge(int[] nums1, int m, int[] nums2, int n) {
         if(nums2 == null || nums2.length == 0 || nums1 == null || nums1.length == 0) return;
         int l1 = m-1, l2 = n-1, index = m+n-1;
@@ -27,11 +28,35 @@ public class MergeSortedArray {
         }
         //for(int i : nums1) System.out.println(i);
     }
-
+    **/
     public static void main(String [] args) {
         MergeSortedArray mergeTwoSortedLists = new MergeSortedArray();
         int [] nums1 = new int []{4,5,6,0,0,0};
         int [] nums2 = new int []{1,2,3};
         mergeTwoSortedLists.merge(nums1,3,nums2, 3);
     }
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int p = nums1.length -1;
+        int p1 = m-1;
+        int p2 = n-1;
+        while(p1 >= 0 && p2 >= 0) {
+            if(nums1[p1] > nums2[p2]) {
+                nums1[p--] = nums1[p1--];
+            } else {
+                nums1[p--] = nums2[p2--];
+            }
+        }
+        while(p1 >= 0) { nums1[p--] = nums1[p1--];}
+
+        while(p2 >= 0) { nums1[p--] = nums2[p2--]; }
+    }
+    /**
+     * Constraints:
+     *
+     * nums1.length == m + n
+     * nums2.length == n
+     * 0 <= m, n <= 200
+     * 1 <= m + n <= 200
+     * -109 <= nums1[i], nums2[j] <= 109
+     */
 }

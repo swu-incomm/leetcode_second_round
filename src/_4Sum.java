@@ -28,6 +28,7 @@
  */
 import java.util.*;
 public class _4Sum {
+    /**
     List<List<Integer>> res;
     public List<List<Integer>> fourSum(int[] nums, int target) {
         res = new ArrayList<>();
@@ -70,7 +71,7 @@ public class _4Sum {
             }
         }
     }
-
+ **/
     public static void main(String [] args) {
         int [] test = {-2,-1,-1,1,1,2,2};
         _4Sum fourSum = new _4Sum();
@@ -80,6 +81,69 @@ public class _4Sum {
                 System.out.printf("%d ", a);
             }
             System.out.println();
+        }
+    }
+    /**
+    List<List<Integer>> res;
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        res = new ArrayList<>();
+        backtrack(nums, 0, target, new ArrayList<>());
+        return res;
+    }
+
+    public void backtrack(int [] nums, int index, int target, List<Integer> cur) {
+        if(target == 0 && cur.size() == 4) {
+            res.add(new ArrayList<>(cur));
+            return;
+        }
+        if(index == nums.length || cur.size() == 4) return;
+
+        for(int i=index; i<nums.length; i++) {
+            cur.add(nums[i]);
+            backtrack(nums, i + 1, target - nums[i], cur);
+            cur.remove(cur.size()-1);
+        }
+    }
+     Constraints:
+
+     1 <= nums.length <= 200
+     -109 <= nums[i] <= 109
+     -109 <= target <= 109
+     **/
+    List<List<Integer>> res;
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        res = new ArrayList<>();
+        if(nums.length < 4) return res;
+        Arrays.sort(nums);
+        for(int i = 0; i<nums.length-3; i++) {
+            if(i == 0 || nums[i] != nums[i -1]) {
+                threeSum(nums, i +1, target - nums[i], nums[i]);
+            }
+        }
+        return res;
+    }
+
+    public void threeSum(int [] nums, int start, int target, int value) {
+        for(int i= start; i<nums.length; i++) {
+            if(i == start || nums[i] != nums[i-1]) {
+                int temp = target - nums[i];
+                int b = i +1, e = nums.length-1;
+                while(b < e) {
+                    if(nums[b] + nums[e] == temp) {
+                        List<Integer> sub = new ArrayList<>();
+                        sub.add(value);
+                        sub.add(nums[i]);
+                        sub.add(nums[b]);
+                        sub.add(nums[e]);
+                        res.add(sub);
+                        while(b < e && nums[b] == nums[b+1]) b++;
+                        while(e> b && nums[e] == nums[e-1]) e--;
+                        b++;
+                        e--;
+                    } else if(nums[b] + nums[e] < temp) b++;
+                    else e--;
+                }
+            }
         }
     }
 }

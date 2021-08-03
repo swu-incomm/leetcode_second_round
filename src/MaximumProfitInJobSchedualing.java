@@ -63,7 +63,7 @@ public class MaximumProfitInJobSchedualing {
             jobs[i] = new Job(startTime[i], endTime[i], profit[i]);
         }
         Comparator<Job> comp = Comparator.comparingInt(a -> a.end);
-        Arrays.sort(jobs, comp);
+        Arrays.sort(jobs, (a, b) -> a.end - b.end);
 
         //dp process
         //两种不同的定义方式

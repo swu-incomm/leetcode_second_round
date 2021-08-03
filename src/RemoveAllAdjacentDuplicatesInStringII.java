@@ -37,11 +37,11 @@ import java.util.Stack;
  * 2 <= k <= 10^4
  * s only contains lower case English letters.
  */
-
+import java.util.*;
 public class RemoveAllAdjacentDuplicatesInStringII {
     class Pair {
-        char key;
-        int freq;
+        private char key;
+        private int freq;
 
         public char getKey() {
             return key;
@@ -64,7 +64,7 @@ public class RemoveAllAdjacentDuplicatesInStringII {
             this.freq = value;
         }
     }
-
+/**
     public String removeDuplicates(String s, int k) {
         StringBuilder ans = new StringBuilder();
         Stack<Pair> stack = new Stack<>();
@@ -90,9 +90,37 @@ public class RemoveAllAdjacentDuplicatesInStringII {
         }
         return ans.toString();
     }
-
+**/
     public static void main(String [] args) {
         RemoveAllAdjacentDuplicatesInStringII solution = new RemoveAllAdjacentDuplicatesInStringII();
         System.out.println(solution.removeDuplicates("abcd", 2));
+    }
+    public String removeDuplicates(String s, int k) {
+        Stack<Pair> stack = new Stack<>();
+        char [] arr = s.toCharArray();
+        for(int i=0; i<arr.length; i++) {
+            char ch = arr[i];
+            if(!stack.isEmpty()) {
+                Pair temp = stack.pop();
+                if(temp.getFreq() == k-1 && temp.getKey() == ch) continue;
+                if(ch != temp.getKey()) {
+                    stack.push(temp);
+                    stack.push(new Pair(ch, 1));
+                } else {
+                    temp.setFreq(temp.getFreq()+1);
+                    stack.push(temp);
+                }
+                continue;
+            }
+            stack.push(new Pair(ch, 1));
+        }
+        StringBuilder sb = new StringBuilder();
+        while(!stack.isEmpty()) {
+            Pair temp = stack.pop();
+            for(int i=0; i<temp.getFreq();i++) {
+                sb.insert(0, temp.getKey());
+            }
+        }
+        return sb.toString();
     }
 }

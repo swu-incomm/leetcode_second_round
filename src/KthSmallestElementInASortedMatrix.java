@@ -1,3 +1,4 @@
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
@@ -19,6 +20,7 @@ import java.util.PriorityQueue;
  * You may assume k is always valid, 1 ≤ k ≤ n2.
  */
 public class KthSmallestElementInASortedMatrix {
+    /**
     public int kthSmallest(int[][] matrix, int k) {
         PriorityQueue<Cube> priorityQueue = new PriorityQueue<>();
         for(int i = 0; i<matrix.length; i++) priorityQueue.offer(new Cube(0, i, matrix[0][i]));
@@ -45,4 +47,33 @@ public class KthSmallestElementInASortedMatrix {
             return this.val - cube.val;
         }
     }
+     **/
+
+    public int kthSmallestMaxHeap(int[][] matrix, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.comparingInt(p -> -p));
+        for(int i=0; i<matrix.length; i++) {
+            for(int j=0; j<matrix[0].length; j++) {
+                pq.offer(matrix[i][j]);
+                if(pq.size() == k + 1) {
+                    pq.poll();
+                }
+            }
+        }
+        return pq.poll();
+    }
+    public int kthSmallestMinHeap(int[][] matrix, int k) {
+        PriorityQueue<int []> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        for(int i=0; i<matrix.length; i++) {
+            pq.offer(new int[] {matrix[i][0], i, 0});
+        }
+        while(k > 1) {
+            int [] temp = pq.poll();
+            k--;
+            if(temp[2] < matrix[0].length-1) {
+                pq.offer(new int [] {matrix[temp[1]][temp[2] + 1], temp[1], temp[2] + 1});
+            }
+        }
+        return pq.poll()[0];
+    }
+
 }

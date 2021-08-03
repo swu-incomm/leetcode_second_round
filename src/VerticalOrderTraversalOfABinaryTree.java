@@ -47,6 +47,7 @@ import java.util.List;
  * Each node's value will be between 0 and 1000.
  */
 public class VerticalOrderTraversalOfABinaryTree {
+    /**
     int min=0, max=0;
     Map<Integer, List<Integer>> map = new HashMap();
     public List<List<Integer>> verticalTraversal(TreeNode root) {
@@ -88,5 +89,46 @@ public class VerticalOrderTraversalOfABinaryTree {
             res.add(list);
         }
         return res;
+    }**/
+    class Pair {
+        int col;
+        TreeNode node;
+        public Pair(int col, TreeNode node) {
+            this.col = col;
+            this.node = node;
+        }
     }
+    public List<List<Integer>> verticalOrder(TreeNode root) {
+        //we use hash map to track column info
+        List<List<Integer>> res = new ArrayList<>();
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        if(root == null) return res;
+        Queue<Pair> queue = new LinkedList<>();
+        queue.offer(new Pair(0, root));
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            for(int i= 0; i<size; i++) {
+                Pair temp = queue.poll();
+                int col = temp.col;
+                TreeNode node = temp.node;
+                if(!map.containsKey(col)) {
+                    map.put(col, new ArrayList<>());
+                }
+                map.get(col).add(node.val);
+                if(node.left != null)
+                    queue.offer(new Pair(col-1, node.left));
+                if(node.right != null)
+                    queue.offer(new Pair(col+1, node.right));
+            }
+        }
+
+        List<Integer> keys = new ArrayList<>(map.keySet());
+        Collections.sort(keys);
+        for(int i : keys) {
+            res.add(map.get(i));
+        }
+        return res;
+    }
+
+    //use hash map to store col info, and then sort the key (column from left to right)
 }

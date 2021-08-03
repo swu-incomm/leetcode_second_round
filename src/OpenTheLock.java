@@ -52,6 +52,7 @@ import java.util.*;
  * that digit differs by 1 (wrapping around, so `'0'` and `'9'` differ by 1), and if *both* nodes are not in `deadends`.
  */
 public class OpenTheLock {
+    /**
     public int openLock(String[] deadends, String target) {
         HashSet<String> visited = new HashSet<>();
         HashSet<String> deadendsSet = new HashSet<>();
@@ -88,5 +89,43 @@ public class OpenTheLock {
             ans++;
         }
         return -1;
+    }**/
+
+    public static int openLock(String[] deadends, String target) {
+        Set<String> deadendsSet = new HashSet<>();
+        Set<String> visited = new HashSet<>();
+        for(String s : deadends) deadendsSet.add(s);
+        int count = 0;
+        Queue<String> queue = new LinkedList<>();
+        queue.offer("0000");
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            for(int i=0; i<size; i++) {
+                String cur = queue.poll();
+                if(visited.contains(cur)) {
+                    continue;
+                }
+                if(cur.equals(target)) return count;
+                visited.add(cur);
+                if(!deadendsSet.contains(cur)) {
+                    for(int j = 0; j<4; j++) {
+                        for(int k = -1; k <=1; k+=2) {
+                            char tempChar = cur.charAt(j);
+                            int tempCharInt = (tempChar - '0' + k + 10)%10;
+                            String nextString = cur.substring(0, j) + tempCharInt + cur.substring(j + 1);
+                            if(!visited.contains(nextString) && !deadendsSet.contains(nextString)) {
+                                queue.offer(nextString);
+                            }
+                        }
+                    }
+                }
+            }
+            count++;
+        }
+        return -1;
+    }
+    public static void main(String [] args) {
+        String [] test = {"8887","8889","8878","8898","8788","8988","7888","9888"};
+        openLock(test, "8888");
     }
 }

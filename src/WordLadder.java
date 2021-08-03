@@ -35,6 +35,7 @@ import java.util.*;
  * Explanation: The endWord "cog" is not in wordList, therefore no possible transformation.
  */
 public class WordLadder {
+    /**
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         if(!wordList.contains(endWord)) return 0;
         Queue<String> queue = new LinkedList<>();
@@ -70,7 +71,7 @@ public class WordLadder {
             }
         }
     }
-
+ **/
     public static void main(String [] args) {
         WordLadder wordLadder = new WordLadder();
         String beginWord = "hot";
@@ -80,5 +81,46 @@ public class WordLadder {
         Collections.addAll(wordList, strings);
         wordList.stream().forEach(System.out::println);
         System.out.println(wordLadder.ladderLength(beginWord, endWord, wordList));
+    }
+
+    /**
+     * Constraints:
+     *
+     * 1 <= beginWord.length <= 10
+     * endWord.length == beginWord.length
+     * 1 <= wordList.length <= 5000
+     * wordList[i].length == beginWord.length
+     * beginWord, endWord, and wordList[i] consist of lowercase English letters.
+     * beginWord != endWord
+     * All the words in wordList are unique.
+     */
+
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        // We use BFS approach to proceed
+        if (!wordList.contains(endWord)) return 0;
+        HashSet<String> set = new HashSet<>(wordList);
+        Queue<String> queue = new LinkedList<>();
+        queue.offer(beginWord);
+        int step = 1;
+        while(!queue.isEmpty()) {
+            int size = queue.size();
+            step++;
+            for(int i=0; i<size; i++) {
+                String cur = queue.poll();
+                for(int j=0; j<cur.length(); j++) {
+                    char [] chars = cur.toCharArray();
+                    for(char ch = 'a'; ch <= 'z'; ch++) {
+                        chars[j] = ch;
+                        String nextString = new String (chars);
+                        if(nextString.equals(endWord)) return step;
+                        else if(!nextString.equals(cur) && set.contains(nextString)) {
+                            queue.offer(nextString);
+                        }
+                    }
+                }
+                set.remove(cur);
+            }
+        }
+        return 0;
     }
 }

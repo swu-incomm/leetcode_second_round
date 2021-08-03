@@ -22,8 +22,15 @@ import java.util.*;
  *
  * Explanation: The 1st 1 in friend's guess is a bull, the 2nd or 3rd 1 is a cow.
  * Note: You may assume that the secret number and your friend's guess only contain digits, and their lengths are always equal.
+ *
+ * Constraints:
+ *
+ * 1 <= secret.length, guess.length <= 1000
+ * secret.length == guess.length
+ * secret and guess consist of digits only.
  */
 public class BullsAndCows {
+    /**
     public String getHint(String secret, String guess) {
         if(secret == null || secret.length() ==0 || guess == null || guess.length()==0) return "0A0B";
         int [] secretCows = new int [10];
@@ -44,11 +51,35 @@ public class BullsAndCows {
             numOfCows += Math.min(secretCows[i], guessCows[i]);
         }
         return numOfBulls + "A" + numOfCows + "B";
-    }
+    }**/
     public static void main(String [] args) {
         String a = "1123";
         String b = "0111";
         BullsAndCows bullsAndCows = new BullsAndCows();
         bullsAndCows.getHint(a, b);
+    }
+    public String getHint(String secret, String guess) {
+        int bull = 0, cow = 0;
+        char [] a1 = secret.toCharArray();
+        char [] a2 = guess.toCharArray();
+        int [] count = new int [10];
+        for(int i=0; i<a1.length; i++) {
+            if(a1[i] == a2[i]) {
+                bull++;
+                a1[i] = '*';
+                a2[i] = '*';
+            }
+            if(a1[i] != '*') {
+                count[a1[i] - '0'] ++;
+            }
+        }
+        for(int i=0; i<a2.length; i++) {
+            char ch = a2[i];
+            if(ch != '*' && count[ch - '0'] > 0) {
+                cow++;
+                count[ch - '0']--;
+            }
+        }
+        return bull + "A" + cow + "B";
     }
 }

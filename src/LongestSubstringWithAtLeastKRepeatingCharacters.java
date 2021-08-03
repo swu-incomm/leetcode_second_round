@@ -37,4 +37,26 @@ public class LongestSubstringWithAtLeastKRepeatingCharacters {
         }
         return ans;
     }
+
+    public int longestSubstringDivideAndConquer(String s, int k) {
+        if(s.length() == 0 || k > s.length()) return 0;
+        int [] count = new int [26];
+        for(int i=0; i<s.length(); i++) {
+            count[s.charAt(i) - 'a'] ++;
+        }
+        for(int i=0; i<s.length(); i++) {
+            if(count[s.charAt(i) - 'a'] >= k) continue;
+            int j = i + 1;
+            while(j < s.length() && count[s.charAt(j) - 'a'] < k) j++;
+            return Math.max(longestSubstringDivideAndConquer(s.substring(0, i), k), longestSubstringDivideAndConquer(s.substring(j), k));
+        }
+        return s.length();
+    }
+    /**
+     * Constraints:
+     *
+     * 1 <= s.length <= 104
+     * s consists of only lowercase English letters.
+     * 1 <= k <= 105
+     */
 }

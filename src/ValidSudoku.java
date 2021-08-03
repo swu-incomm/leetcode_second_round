@@ -1,4 +1,4 @@
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * Determine if a 9x9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
@@ -51,6 +51,13 @@ import java.util.HashSet;
  * The given board size is always 9x9.
  *
  *
+ *Constraints:
+ *
+ * board.length == 9
+ * board[i].length == 9
+ * board[i][j] is a digit or '.'.
+ *
+ *
  *
  * The key point is by how to use i, j to represent rows, columns and 3 x 3 matrix
  * for rows: hashset.contains(matrix[i][j])
@@ -64,6 +71,7 @@ import java.util.HashSet;
  * 第二层循环 一到九 对于row和col直接顺序遍历， 对于matrix， 运用% 与 / 进行行和列的遍历
  */
 public class ValidSudoku {
+    /**
     public boolean isValidSudoku(char[][] board) {
         for(int i = 0; i<9;i++) {
             HashSet<Character> rowSet = new HashSet<>();
@@ -82,6 +90,25 @@ public class ValidSudoku {
             }
         }
 
+        return true;
+    }
+     **/
+    public boolean isValidSudoku(char[][] board) {
+        for(int i=0; i<9; i++) {
+            Set<Character> rowSet = new HashSet<>();
+            Set<Character> colSet = new HashSet<>();
+            Set<Character> matrixSet = new HashSet<>();
+            for(int j=0; j<9; j++) {
+                //row
+                if(board[i][j] != '.' && !rowSet.add(board[i][j])) return false;
+                //col
+                if(board[j][i] != '.' && !colSet.add(board[j][i])) return false;
+                //matrix
+                int rowStart = 3 * (i/3);
+                int colStart = 3 * (i%3);
+                if(board[rowStart + j/3][colStart + j%3] != '.' && !matrixSet.add(board[rowStart + j/3][colStart + j%3])) return false;
+            }
+        }
         return true;
     }
 }
