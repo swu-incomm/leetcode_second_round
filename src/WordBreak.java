@@ -31,44 +31,82 @@ import java.util.*;
  * 1 <= wordDict[i].length <= 20
  * s and wordDict[i] consist of only lowercase English letters.
  * All the strings of wordDict are unique.
+ * //First solution top-down backtrack with memorization
+ *     public boolean wordBreak(String s, List<String> wordDict) {
+ *         return backtrack(0, s, wordDict, new Boolean[s.length()]);
+ *     }
+ *
+ *     public boolean backtrack(int index, String s, List<String> wordDict, Boolean [] memorization) {
+ *         if(index == s.length()) {
+ *             return true;
+ *         }
+ *         if(memorization[index] != null) {
+ *             return memorization[index];
+ *         }
+ *         boolean res = false;
+ *         for(int i=index +1; i<=s.length(); i++) {
+ *             if(wordDict.contains(s.substring(index, i)) && backtrack(i, s, wordDict, memorization)) {
+ *                 res = true;
+ *                 break;
+ *             }
+ *         }
+ *         memorization[index] = res;
+ *         return res;
+ *     }
+ *
+ *     //Second solution bottom up dp
+ *     public boolean wordBreakDpBottomUp(String s, List<String> wordDict) {
+ *         boolean [] dp = new boolean[s.length() + 1];
+ *         dp[0] = true;
+ *         for(int i=1; i<=s.length(); i++) {
+ *             for(int j=0; j<wordDict.size(); j++) {
+ *                 String temp = wordDict.get(j);
+ *                 int diff = i - temp.length();
+ *                 if(diff >= 0 && dp[diff]) {
+ *                     dp[i] = s.substring(diff, i).equals(temp);
+ *                 }
+ *             }
+ *         }
+ *         return dp[s.length()];
+ *     }
  */
 public class WordBreak {
-    //First solution top-down backtrack with memorization
     public boolean wordBreak(String s, List<String> wordDict) {
-        return backtrack(0, s, wordDict, new Boolean[s.length()]);
+        return backtrack(s, 0, wordDict, new Boolean [s.length()]);
     }
 
-    public boolean backtrack(int index, String s, List<String> wordDict, Boolean [] memorization) {
+    public boolean backtrack(String s, int index, List<String> wordDict, Boolean [] mem) {
         if(index == s.length()) {
             return true;
         }
-        if(memorization[index] != null) {
-            return memorization[index];
+        if(mem[index] != null) {
+            return mem[index];
         }
+
         boolean res = false;
-        for(int i=index +1; i<=s.length(); i++) {
-            if(wordDict.contains(s.substring(index, i)) && backtrack(i, s, wordDict, memorization)) {
+        for(int i=index+1; i <=s.length(); i++) {
+            String temp = s.substring(index, i);
+            if(wordDict.contains(temp) && backtrack(s, i, wordDict, mem)) {
                 res = true;
                 break;
             }
         }
-        memorization[index] = res;
+        mem[index] = res;
         return res;
     }
 
-    //Second solution bottom up dp
-    public boolean wordBreakDpBottomUp(String s, List<String> wordDict) {
+    public boolean wordBreakDP(String s, List<String> wordDict) {
         boolean [] dp = new boolean[s.length() + 1];
         dp[0] = true;
-        for(int i=1; i<=s.length(); i++) {
-            for(int j=0; j<wordDict.size(); j++) {
-                String temp = wordDict.get(j);
-                int diff = i - temp.length();
-                if(diff >= 0 && dp[diff]) {
-                    dp[i] = s.substring(diff, i).equals(temp);
+        for(int i = 1; i<=s.length(); i++) {
+            for(int j=0;j<i;j++) {
+                if(dp[j] && wordDict.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
                 }
             }
         }
         return dp[s.length()];
     }
+
 }

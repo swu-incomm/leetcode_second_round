@@ -123,4 +123,5 @@ public class RemoveAllAdjacentDuplicatesInStringII {
         }
         return sb.toString();
     }
+
 }
