@@ -65,3 +65,23 @@ TreeNode ans;
         return midVal + leftVal + rightVal >0 ? true : false;
     }
 }
+/*
+class Solution {
+    TreeNode lca = null;
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        dfs(root, p, q);
+        return lca;
+    }
+    public boolean dfs(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null) return false;
+        int findCur = (root.val == p.val || root.val == q.val) ? 1 : 0;
+        int findLeft = dfs(root.left, p, q) ? 1 : 0;
+        int findRight = dfs(root.right, p, q) ? 1 : 0;
+
+        int sum = findCur + findLeft + findRight;
+        if(sum >= 2 && lca == null) lca = root;
+        if(sum > 0) return true;
+        return false;
+    }
+}
+ */

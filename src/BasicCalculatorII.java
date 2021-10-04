@@ -64,3 +64,43 @@ public class BasicCalculatorII {
         System.out.println(calculate(s));
     }
 }
+/*
+        public int calculate(String s) {
+        char sign = '+';
+        int res = 0;
+        int tempInt = 0;
+        Stack<Integer> stack = new Stack<>();
+        char [] chars = s.toCharArray();
+        int i=0;
+        while(i<chars.length) {
+            char temp = chars[i];
+            if(temp == ' ') {
+                i++;
+                continue;
+            }
+            if(Character.isDigit(temp)) {
+                tempInt+=temp - '0';
+                while(++i<chars.length && Character.isDigit(chars[i])) {
+                    tempInt = tempInt * 10 + chars[i] - '0';
+                }
+                if(sign == '+') {
+                    stack.push(tempInt);
+                } else if (sign == '-'){
+                    stack.push(-1 * tempInt);
+                } else if(sign == '/') {
+                    stack.push(stack.pop() / tempInt);
+                } else if (sign == '*') {
+                    stack.push(stack.pop() * tempInt);
+                }
+                tempInt = 0;
+            } else {
+                sign = temp;
+                i++;
+            }
+        }
+        for(int num : stack) {
+                res+=num;
+            }
+        return res;
+    }
+* */
